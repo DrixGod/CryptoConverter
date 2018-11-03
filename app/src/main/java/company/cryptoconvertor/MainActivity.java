@@ -1,60 +1,71 @@
 package company.cryptoconvertor;
 
+import android.Manifest;
 import android.annotation.SuppressLint;
+import android.content.Context;
+import android.content.pm.PackageManager;
+import android.location.Address;
+import android.location.Geocoder;
+import android.location.Location;
+import android.location.LocationManager;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
+import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
+import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.apptakk.http_request.HttpRequest;
-import com.apptakk.http_request.HttpRequestTask;
-import com.apptakk.http_request.HttpResponse;
-
-import java.io.IOException;
-import java.util.Currency;
-import java.util.Locale;
-
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.Response;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
-    public static String COIN = "BTC";
-    public static String CURRENCY = "USD";
-    public static String CURRENCY_SYMBOL = "$";
-    public String CRYPTO_URL = "https://min-api.cryptocompare.com/data/price?fsym=" + COIN + "&tsyms=" + CURRENCY;
-    OkHttpClient client = new OkHttpClient();
+    private Button b;
+    private TextView t;
+    private TextView countryTextView;
+    private LocationManager locationManager;
+    double LAT;
+    double LNG;
+
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_main);
-        Locale locale = getResources().getConfiguration().locale;
-        CURRENCY_SYMBOL= Currency.getInstance(locale).getSymbol();
-        final TextView countryTextView = findViewById(R.id.Country);
-        doCall(countryTextView);
+
+        t = (TextView) findViewById(R.id.textView);
+        b = (Button) findViewById(R.id.button);
+        countryTextView = findViewById(R.id.text10);
+
+        locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+
+        if(ActivityCompat.checkSelfPermission(this,Manifest.permission.ACCESS_FINE_LOCATION)
+                != PackageManager.PERMISSION_GRANTED &&
+                ActivityCompat.checkSelfPermission(this,Manifest.permission.ACCESS_COARSE_LOCATION)
+                != PackageManager.PERMISSION_GRANTED){
+            return;
+        }
+
+        Location location = locationManager.getLastKnownLocation(locationManager.NETWORK_PROVIDER);
+
+        onLocationChanged(location);
+        loc_func(location);
     }
 
-    private void doCall(final TextView countryTextView){
-        new HttpRequestTask(
-                new HttpRequest(CRYPTO_URL, HttpRequest.POST, "{ \"currency\": \"value\" }"),
-                new HttpRequest.Handler() {
-                    @SuppressLint("SetTextI18n")
-                    @Override
-                    public void response(HttpResponse response) {
-                        if (response.code == 200) {
-                            String result = response.body.replaceAll("\"", "")
-                                    .replace("{", "").replace("}", "").split(":")[1];
-                            countryTextView.setText(result + " " + CURRENCY_SYMBOL);
-                        } else {
-                            Toast.makeText(getApplicationContext(), "error, check your internet connection!", Toast.LENGTH_LONG).show();
-                            Log.e(this.getClass().toString(), "Request unsuccessful: " + response);
-                        }
-                    }
-                }).execute();
+    @SuppressLint("SetTextI18n")
+    public void onLocationChanged(Location location){
+        LAT = location.getLongitude();
+        LNG = location.getLatitude();
     }
 
-
+    private void loc_func(Location location){
+        try{
+            Geocoder geocoder = new Geocoder(this);
+            List<Address> addressList = null;
+            addressList = geocoder.getFromLocation(LAT,LNG,1);
+            String country = addressList.get(0).getCountryName();
+            countryTextView.setText(country);
+        }catch (Exception ignored){
+        }
+    }
 }
