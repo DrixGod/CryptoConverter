@@ -14,6 +14,7 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import java.io.IOException;
 import java.util.List;
 
@@ -23,8 +24,8 @@ public class MainActivity extends AppCompatActivity {
     double LNG;
     TextView locationTextView;
     TextView details;
-    private String countryName;
-    private String countryCode;
+    private static String countryName;
+    private static String countryCode;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -52,6 +53,7 @@ public class MainActivity extends AppCompatActivity {
         onLocationChanged(location);
         getLocationDetails();
 
+
         //Change activiy -> pentru debug comenteaza asta
         Runnable r = new Runnable() {
             @Override
@@ -60,7 +62,7 @@ public class MainActivity extends AppCompatActivity {
             }
         };
         Handler h = new Handler();
-        h.postDelayed(r, 2500);
+        h.postDelayed(r, 500);
 
     }
 
@@ -88,19 +90,20 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    public String getCountryName() {
+    public static String getCountryName() {
         return countryName;
     }
 
     public void setCountryName(String countryName) {
-        this.countryName = countryName;
+        MainActivity.countryName = countryName;
     }
 
-    public String getCountryCode() {
+    public static String getCountryCode() {
         return countryCode;
     }
 
     public void setCountryCode(String countryCode) {
-        this.countryCode = countryCode;
+        MainActivity.countryCode = countryCode;
     }
+
 }
