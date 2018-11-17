@@ -1,5 +1,6 @@
 package company.cryptoconvertor;
 
+import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -12,11 +13,14 @@ import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import java.io.IOException;
+import java.util.Currency;
 import java.util.List;
+import java.util.Locale;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -26,6 +30,8 @@ public class MainActivity extends AppCompatActivity {
     TextView details;
     private static String countryName;
     private static String countryCode;
+    private static Currency currency;
+    private static String symbol;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -39,7 +45,8 @@ public class MainActivity extends AppCompatActivity {
 
         if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             // TODO: Consider calling
-            //    ActivityCompat#requestPermissions
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 225);
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_COARSE_LOCATION}, 225);
             // here to request the missing permissions, and then overriding
             //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
             //                                          int[] grantResults)
@@ -81,9 +88,12 @@ public class MainActivity extends AppCompatActivity {
             addressList = geocoder.getFromLocation(LAT,LNG,1);
             String countryName = addressList.get(0).getCountryName();
             String countryCode = addressList.get(0).getCountryCode();
+            Locale countryLocale = new Locale("", countryCode);
+            currency=Currency.getInstance(countryLocale);
+            symbol = currency.getSymbol(countryLocale);
             setCountryName(countryName);
             setCountryCode(countryCode);
-            details.setText("Country: " + countryName + "\n" + "Code: " + countryCode);
+            details.setText("Country: " + countryName + "\n" + "Code: " + countryCode + "\n" + currency + "\n" + symbol);
         } catch (IOException e) {
             e.printStackTrace();
             Toast.makeText(getApplicationContext(), "Error: " + e, Toast.LENGTH_SHORT).show();
@@ -101,7 +111,12 @@ public class MainActivity extends AppCompatActivity {
     public static String getCountryCode() {
         return countryCode;
     }
-
+    public static String getCurrency() {
+        return currency.toString();
+    }
+    public static String getCurrencySymbol() {
+        return symbol;
+    }
     public void setCountryCode(String countryCode) {
         MainActivity.countryCode = countryCode;
     }

@@ -14,10 +14,11 @@ import okhttp3.Response;
 
 public class CoinList extends AppCompatActivity {
 
-    private final String COUNTRY_CURRENCY = "RON";
+    private final String COUNTRY_CURRENCY = MainActivity.getCurrency();
     private String COIN = "BTC";
     public String CRYPTO_URL = "https://min-api.cryptocompare.com/data/price?fsym="+COIN+"&tsyms="+COUNTRY_CURRENCY;
     private TextView priceTextView;
+    private TextView symbol;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,6 +26,7 @@ public class CoinList extends AppCompatActivity {
         setContentView(R.layout.coin_layout);
 
         priceTextView = findViewById(R.id.priceUsd);
+        symbol = findViewById(R.id.symbol);
         OkHttpClient client = new OkHttpClient();
         String url = CRYPTO_URL;
 
@@ -48,6 +50,7 @@ public class CoinList extends AppCompatActivity {
                         @Override
                         public void run() {
                             priceTextView.setText(parseResponse);
+                            symbol.setText(MainActivity.getCurrencySymbol());
                         }
                     });
                 }
