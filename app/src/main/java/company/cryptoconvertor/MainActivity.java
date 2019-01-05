@@ -13,7 +13,8 @@ import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
+import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -26,20 +27,22 @@ public class MainActivity extends AppCompatActivity {
 
     double LAT;
     double LNG;
-    TextView locationTextView;
-    TextView details;
+    TextView country;
     private static String countryName;
     private static String countryCode;
     private static Currency currency;
     private static String symbol;
+    Button coins;
+    Button convert;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        locationTextView = findViewById(R.id.location);
-        details = findViewById(R.id.details);
+        country = findViewById(R.id.country);
+        coins = findViewById(R.id.List);
+        convert = findViewById(R.id.Convert);
 
         LocationManager locationManager = (LocationManager) this.getSystemService(LOCATION_SERVICE);
 
@@ -61,15 +64,35 @@ public class MainActivity extends AppCompatActivity {
         getLocationDetails();
 
 
-        //Change activiy -> pentru debug comenteaza asta
-        Runnable r = new Runnable() {
+        coins.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void run() {
-                startActivity(new Intent(MainActivity.this, CoinList.class));
+            public void onClick(View v) {
+                Runnable r = new Runnable() {
+                    @Override
+                    public void run() {
+                        startActivity(new Intent(MainActivity.this, ConvertActivity.class));
+                    }
+                };
+                Handler h = new Handler();
+                h.postDelayed(r, 500);
             }
-        };
-        Handler h = new Handler();
-        h.postDelayed(r, 500);
+        });
+
+        convert.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Runnable r = new Runnable() {
+                    @Override
+                    public void run() {
+                        startActivity(new Intent(MainActivity.this, CoinList.class));
+                    }
+                };
+                Handler h = new Handler();
+                h.postDelayed(r, 500);
+            }
+        });
+
+
 
     }
 
@@ -77,7 +100,6 @@ public class MainActivity extends AppCompatActivity {
     public void onLocationChanged(Location location){
         LAT = location.getLatitude();
         LNG = location.getLongitude();
-        locationTextView.setText("Latitude: " + LAT + "\nLongitude: " + LNG);
     }
 
     @SuppressLint("SetTextI18n")
@@ -93,7 +115,7 @@ public class MainActivity extends AppCompatActivity {
             symbol = currency.getSymbol(countryLocale);
             setCountryName(countryName);
             setCountryCode(countryCode);
-            details.setText("Country: " + countryName + "\n" + "Code: " + countryCode + "\n" + currency + "\n" + symbol);
+            country.setText(countryName);
         } catch (IOException e) {
             e.printStackTrace();
             Toast.makeText(getApplicationContext(), "Error: " + e, Toast.LENGTH_SHORT).show();
