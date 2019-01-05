@@ -47,14 +47,15 @@ public class ConvertActivity extends AppCompatActivity {
                 else if(coin.getText().toString().isEmpty()){
                     Toast.makeText(getApplicationContext(),"Coin can't be empty",Toast.LENGTH_SHORT).show();
                 } else {
-                    COIN = coin.getText().toString().toUpperCase();
+                    String selectedCoin = coin.getText().toString().toUpperCase();
+                    makeRequest(selectedCoin);
 
                 }
             }
         });
     }
 
-    public void makeRequest(){
+    public void makeRequest(final String selectedCoin){
         OkHttpClient client = new OkHttpClient();
         String url = CRYPTO_URL;
 
@@ -81,7 +82,7 @@ public class ConvertActivity extends AppCompatActivity {
                         @SuppressLint("SetTextI18n")
                         @Override
                         public void run() {
-                            result.setText(amount + " " + COIN + " is " + finalAmount + " " + COUNTRY_CURRENCY);
+                            result.setText(amount + " " + selectedCoin + " is " + finalAmount + " " + COUNTRY_CURRENCY);
                         }
                     });
                 }
