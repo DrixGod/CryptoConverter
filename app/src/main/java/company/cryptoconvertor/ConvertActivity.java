@@ -3,6 +3,8 @@ package company.cryptoconvertor;
 import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.text.InputType;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -25,19 +27,17 @@ public class ConvertActivity extends AppCompatActivity {
     EditText coin;
 
     private final String COUNTRY_CURRENCY = MainActivity.getCurrency();
-    private String COIN = "BTC";
-    public String CRYPTO_URL = "https://min-api.cryptocompare.com/data/price?fsym="+COIN+"&tsyms="+COUNTRY_CURRENCY;
+    //private String COIN = "BTC";
+    public String CRYPTO_URL;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_convert);
-
         result = findViewById(R.id.convertResult);
         convertButton = findViewById(R.id.convertButton);
         amount = findViewById(R.id.amount);
         coin = findViewById(R.id.coin);
-
         convertButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -47,6 +47,7 @@ public class ConvertActivity extends AppCompatActivity {
                 else if(coin.getText().toString().isEmpty()){
                     Toast.makeText(getApplicationContext(),"Coin can't be empty",Toast.LENGTH_SHORT).show();
                 } else {
+                    CRYPTO_URL  = "https://min-api.cryptocompare.com/data/price?fsym="+coin.getText().toString().toUpperCase()+"&tsyms="+COUNTRY_CURRENCY;
                     String selectedCoin = coin.getText().toString().toUpperCase();
                     makeRequest(selectedCoin);
 
@@ -70,9 +71,13 @@ public class ConvertActivity extends AppCompatActivity {
             }
             @Override
             public void onResponse(Call call, Response response) throws IOException {
-                if(response.isSuccessful()){
+                if(response.isSuccessful()) {
                     final String myResponse = response.body().string();
-                    final String parseResponse = parseResponse(myResponse);
+                    final String parseResponse;
+                    if (myResponse.contains("There is no data for the symbol")) {
+                        result.setText("Invalid coin name! Please try again!");
+                    } else{
+                        parseResponse = parseResponse(myResponse);
                     double convertedAmount = Double.parseDouble(parseResponse);
                     String amountDeclared = amount.getText().toString();
                     double amountDouble = Double.parseDouble(amountDeclared);
@@ -82,9 +87,10 @@ public class ConvertActivity extends AppCompatActivity {
                         @SuppressLint("SetTextI18n")
                         @Override
                         public void run() {
-                            result.setText(amount + " " + selectedCoin + " is " + finalAmount + " " + COUNTRY_CURRENCY);
+                            result.setText(amount.getText().toString() + " " + selectedCoin + " is " + finalAmount + " " + COUNTRY_CURRENCY);
                         }
                     });
+                }
                 }
             }
         });

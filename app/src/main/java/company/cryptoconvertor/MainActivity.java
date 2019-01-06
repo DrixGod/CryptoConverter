@@ -64,7 +64,7 @@ public class MainActivity extends AppCompatActivity {
         getLocationDetails();
 
 
-        coins.setOnClickListener(new View.OnClickListener() {
+        convert.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Runnable r = new Runnable() {
@@ -78,7 +78,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        convert.setOnClickListener(new View.OnClickListener() {
+        coins.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Runnable r = new Runnable() {
