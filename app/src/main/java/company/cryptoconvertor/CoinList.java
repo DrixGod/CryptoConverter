@@ -49,7 +49,7 @@ public class CoinList extends AppCompatActivity {
         symbol = findViewById(R.id.symbol5);
         requestPrice(priceTextView,symbol,"BCH");
 
-        coinIcon = findViewById(R.id.coinIcon3);
+        coinIcon = findViewById(R.id.coinIcon4);
         coinIcon.setImageResource(R.drawable.eos);
         priceTextView = findViewById(R.id.priceUsd4);
         symbol = findViewById(R.id.symbol4);
