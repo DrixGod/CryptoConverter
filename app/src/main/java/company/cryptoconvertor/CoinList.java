@@ -15,8 +15,6 @@ import okhttp3.Response;
 public class CoinList extends AppCompatActivity {
 
     private final String COUNTRY_CURRENCY = MainActivity.getCurrency();
-    private String COIN = "BTC";
-    public String CRYPTO_URL = "https://min-api.cryptocompare.com/data/price?fsym="+COIN+"&tsyms="+COUNTRY_CURRENCY;
     private TextView priceTextView;
     private TextView symbol;
 
@@ -27,8 +25,29 @@ public class CoinList extends AppCompatActivity {
 
         priceTextView = findViewById(R.id.priceUsd);
         symbol = findViewById(R.id.symbol);
+        requestPrice(priceTextView,symbol,"BTC");
+
+        priceTextView = findViewById(R.id.priceUsd2);
+        symbol = findViewById(R.id.symbol2);
+        requestPrice(priceTextView,symbol,"ETH");
+
+        priceTextView = findViewById(R.id.priceUsd3);
+        symbol = findViewById(R.id.symbol3);
+        requestPrice(priceTextView,symbol,"XRP");
+
+        priceTextView = findViewById(R.id.priceUsd5);
+        symbol = findViewById(R.id.symbol5);
+        requestPrice(priceTextView,symbol,"BCH");
+
+        priceTextView = findViewById(R.id.priceUsd4);
+        symbol = findViewById(R.id.symbol4);
+        requestPrice(priceTextView,symbol,"EOS");
+
+    }
+
+    private void requestPrice(final TextView priceTextView, final TextView symbol,String COIN){
         OkHttpClient client = new OkHttpClient();
-        String url = CRYPTO_URL;
+        String url = "https://min-api.cryptocompare.com/data/price?fsym="+COIN+"&tsyms="+COUNTRY_CURRENCY;
 
         Request request = new Request.Builder()
                 .url(url)
