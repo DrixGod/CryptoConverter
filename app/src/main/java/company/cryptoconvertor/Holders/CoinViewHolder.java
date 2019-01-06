@@ -17,7 +17,7 @@ public class CoinViewHolder extends RecyclerView.ViewHolder {
         coinSymbol = itemView.findViewById(R.id.coinSymbol);
         coinName = itemView.findViewById(R.id.coinName);
         coinPrice = itemView.findViewById(R.id.priceUsd);
-        twentyForHoursChange = itemView.findViewById(R.id.twentyFourHour);
-        sevenDaysChange = itemView.findViewById(R.id.sevenDay);
+       // twentyForHoursChange = itemView.findViewById(R.id.twentyFourHour);
+       // sevenDaysChange = itemView.findViewById(R.id.sevenDay);
     }
 }
