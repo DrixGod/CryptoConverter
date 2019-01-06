@@ -2,6 +2,7 @@ package company.cryptoconvertor;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.io.IOException;
@@ -17,28 +18,39 @@ public class CoinList extends AppCompatActivity {
     private final String COUNTRY_CURRENCY = MainActivity.getCurrency();
     private TextView priceTextView;
     private TextView symbol;
+    private ImageView coinIcon;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.coin_layout);
 
+        coinIcon = findViewById(R.id.coinIcon);
+        coinIcon.setImageResource(R.drawable.btc);
         priceTextView = findViewById(R.id.priceUsd);
         symbol = findViewById(R.id.symbol);
         requestPrice(priceTextView,symbol,"BTC");
 
+        coinIcon = findViewById(R.id.coinIcon2);
+        coinIcon.setImageResource(R.drawable.eth);
         priceTextView = findViewById(R.id.priceUsd2);
         symbol = findViewById(R.id.symbol2);
         requestPrice(priceTextView,symbol,"ETH");
 
+        coinIcon = findViewById(R.id.coinIcon3);
+        coinIcon.setImageResource(R.drawable.xrp);
         priceTextView = findViewById(R.id.priceUsd3);
         symbol = findViewById(R.id.symbol3);
         requestPrice(priceTextView,symbol,"XRP");
 
+        coinIcon = findViewById(R.id.coinIcon5);
+        coinIcon.setImageResource(R.drawable.bch);
         priceTextView = findViewById(R.id.priceUsd5);
         symbol = findViewById(R.id.symbol5);
         requestPrice(priceTextView,symbol,"BCH");
 
+        coinIcon = findViewById(R.id.coinIcon3);
+        coinIcon.setImageResource(R.drawable.eos);
         priceTextView = findViewById(R.id.priceUsd4);
         symbol = findViewById(R.id.symbol4);
         requestPrice(priceTextView,symbol,"EOS");
