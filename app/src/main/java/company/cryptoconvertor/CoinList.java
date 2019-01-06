@@ -2,6 +2,8 @@ package company.cryptoconvertor;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -19,12 +21,24 @@ public class CoinList extends AppCompatActivity {
     private TextView priceTextView;
     private TextView symbol;
     private ImageView coinIcon;
+    private Button refresh;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.coin_layout);
+        setCoins();
+        refresh = findViewById(R.id.refresh);
+        refresh.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                refreshPrices();
+            }
+        });
 
+    }
+
+    private void setCoins(){
         coinIcon = findViewById(R.id.coinIcon);
         coinIcon.setImageResource(R.drawable.btc);
         priceTextView = findViewById(R.id.priceUsd);
@@ -49,12 +63,34 @@ public class CoinList extends AppCompatActivity {
         symbol = findViewById(R.id.symbol5);
         requestPrice(priceTextView,symbol,"BCH");
 
-        coinIcon = findViewById(R.id.coinIcon3);
+        coinIcon = findViewById(R.id.coinIcon4);
         coinIcon.setImageResource(R.drawable.eos);
         priceTextView = findViewById(R.id.priceUsd4);
         symbol = findViewById(R.id.symbol4);
         requestPrice(priceTextView,symbol,"EOS");
+    }
 
+    private void refreshPrices(){
+
+        priceTextView = findViewById(R.id.priceUsd);
+        symbol = findViewById(R.id.symbol);
+        requestPrice(priceTextView,symbol,"BTC");
+
+        priceTextView = findViewById(R.id.priceUsd2);
+        symbol = findViewById(R.id.symbol2);
+        requestPrice(priceTextView,symbol,"ETH");
+
+        priceTextView = findViewById(R.id.priceUsd3);
+        symbol = findViewById(R.id.symbol3);
+        requestPrice(priceTextView,symbol,"XRP");
+
+        priceTextView = findViewById(R.id.priceUsd5);
+        symbol = findViewById(R.id.symbol5);
+        requestPrice(priceTextView,symbol,"BCH");
+
+        priceTextView = findViewById(R.id.priceUsd4);
+        symbol = findViewById(R.id.symbol4);
+        requestPrice(priceTextView,symbol,"EOS");
     }
 
     private void requestPrice(final TextView priceTextView, final TextView symbol,String COIN){
