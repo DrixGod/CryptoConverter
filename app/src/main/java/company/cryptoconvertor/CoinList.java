@@ -1,6 +1,7 @@
 package company.cryptoconvertor;
 
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
@@ -20,15 +21,13 @@ public class CoinList extends AppCompatActivity {
     private final String COUNTRY_CURRENCY = MainActivity.getCurrency();
     private TextView priceTextView;
     private TextView symbol;
-    private ImageView coinIcon;
-    private Button refresh;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.coin_layout);
         setCoins();
-        refresh = findViewById(R.id.refresh);
+        Button refresh = findViewById(R.id.refresh);
         refresh.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -39,7 +38,7 @@ public class CoinList extends AppCompatActivity {
     }
 
     private void setCoins(){
-        coinIcon = findViewById(R.id.coinIcon);
+        ImageView coinIcon = findViewById(R.id.coinIcon);
         coinIcon.setImageResource(R.drawable.btc);
         priceTextView = findViewById(R.id.priceUsd);
         symbol = findViewById(R.id.symbol);
@@ -103,13 +102,14 @@ public class CoinList extends AppCompatActivity {
 
         client.newCall(request).enqueue(new Callback() {
             @Override
-            public void onFailure(Call call, IOException e) {
+            public void onFailure(@NonNull Call call, @NonNull IOException e) {
                 e.printStackTrace();
             }
 
             @Override
-            public void onResponse(Call call, Response response) throws IOException {
+            public void onResponse(@NonNull Call call, @NonNull Response response) throws IOException {
                 if(response.isSuccessful()){
+                    assert response.body() != null;
                     final String myResponse = response.body().string();
                     final String parseResponse = parseResponse(myResponse);
                     System.out.println("\n\n" + myResponse + "\n\n");

@@ -39,7 +39,6 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
         country = findViewById(R.id.country);
         coins = findViewById(R.id.List);
         convert = findViewById(R.id.Convert);
@@ -62,7 +61,6 @@ public class MainActivity extends AppCompatActivity {
         Location location = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
         onLocationChanged(location);
         getLocationDetails();
-
 
         convert.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -91,9 +89,6 @@ public class MainActivity extends AppCompatActivity {
                 h.postDelayed(r, 500);
             }
         });
-
-
-
     }
 
     @SuppressLint("SetTextI18n")
@@ -125,11 +120,9 @@ public class MainActivity extends AppCompatActivity {
     public static String getCountryName() {
         return countryName;
     }
-
     public void setCountryName(String countryName) {
         MainActivity.countryName = countryName;
     }
-
     public static String getCountryCode() {
         return countryCode;
     }

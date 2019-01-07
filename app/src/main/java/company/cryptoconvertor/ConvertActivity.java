@@ -3,16 +3,12 @@ package company.cryptoconvertor;
 import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.text.InputType;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import java.io.IOException;
-
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.OkHttpClient;
@@ -20,14 +16,11 @@ import okhttp3.Request;
 import okhttp3.Response;
 
 public class ConvertActivity extends AppCompatActivity {
-
     TextView result;
     Button convertButton;
     EditText amount;
     EditText coin;
-
     private final String COUNTRY_CURRENCY = MainActivity.getCurrency();
-    //private String COIN = "BTC";
     public String CRYPTO_URL;
 
     @Override
@@ -69,6 +62,7 @@ public class ConvertActivity extends AppCompatActivity {
             public void onFailure(Call call, IOException e) {
                 e.printStackTrace();
             }
+            @SuppressLint("SetTextI18n")
             @Override
             public void onResponse(Call call, Response response) throws IOException {
                 if(response.isSuccessful()) {
